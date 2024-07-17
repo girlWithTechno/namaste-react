@@ -1,19 +1,5 @@
-
-/**
- * Create a structure like below
- * <div id="parent">
- *      <div id="child">
- *          <h1>I'm h1 tag</h1>
- *          <h2>I'm h2 tag</h1>
- *      </div>
- *      <div id="child2">
- *          <h1>I'm h1 child2 tag</h1>
- *          <h2>I'm h2 child2 tag</h1>
- *      </div>
- * </div>
- * 
- * ReactElement(object) is an object that becomes => HTML(Browser Understands) while it is rendering on to the DOM
- */
+import React from "react";
+import ReactDOM from "react-dom/client";
 
 const parent = React.createElement(
     "div", 
@@ -30,7 +16,7 @@ const parent = React.createElement(
                 React.createElement(
                     "h1",
                     {},
-                    "I'm h1 tag"
+                    "This is Namaste React"
                 ),
                 React.createElement(
                     "h2",
