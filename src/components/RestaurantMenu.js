@@ -1,32 +1,43 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
+import { useParams } from "react-router-dom";
+import useRestaurantMenu from "../utils/useRestaurantMenu";
+import Shimmer from "./Shimmer";
 
 const RestaurantMenu = () => {
-    const [restaurantMenu, setRestaurantMenu] = useState(null);
-    
-    useEffect(()=>{
-        fetchMenu();
-    },[]);
+    const { resId } = useParams();
+    const resInfo = useRestaurantMenu(resId);
 
-    const fetchMenu = async () => {
-        try{
-            const response = await fetch("https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=28.45970&lng=77.02820&restaurantId=594820&catalog_qa=undefined&submitAction=ENTER");
-            const data = await response.json();
+    if(resInfo === null ) return <Shimmer />
 
-            setRestaurantMenu(data)
-            console.log("data here", data)
-        }catch(error){
-            console.error(error)
-        }
-    }
-console.log('show me restaurant',restaurantMenu)
+    const {name, costForTwoMessage, cuisines} = resInfo?.cards?.[2]?.card?.card?.info;
+    const {itemCards} = resInfo?.cards?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[2]?.card?.card;
+
+    if(!itemCards?.length) console.error("No CARDS HERE")
+
     return (
         <div className="menu">
-            <h1>Restaurant Name</h1>
+            <h1>{name}</h1>
+            <h2>{costForTwoMessage}</h2>
+            <ul>
+                {
+                    cuisines?.map((item)=>{
+                        return (
+                            <li key={item}>{item}</li>
+                        )
+                    })
+                }
+            </ul>
             <h2>Menu</h2>
             <ul>
-                <li>Burgers</li>
-                <li>Biryani</li>
-                <li>Diet Coke</li>
+                {
+                    itemCards?.map((cardItem)=>{
+                        return (
+                            <li key={cardItem?.card?.info?.id}>
+                                {cardItem?.card?.info?.name}
+                            </li>
+                        )
+                    })
+                }
             </ul>
         </div>
     )
