@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import RestaurantCard from "./RestaurantCard";
+import React, { useContext, useState } from "react";
+import RestaurantCard, {withOpenLabel} from "./RestaurantCard";
 import Shimmer from "./Shimmer.js";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import UserContext from "../utils/UserContext";
 
 const Body = () => {
     const [list, setList] = React.useState([]);
@@ -10,11 +11,14 @@ const Body = () => {
     const [originalList, setOriginalList] = useState([]);
 
     const networkStatus = useOnlineStatus();
+    const {loggedInUser, setUserName} = useContext(UserContext);
     
     const onTopRatedClick = () => {
         const filteredList = list.filter((item)=> item.info.avgRatingString > 4.2);
         setList(filteredList)
     }
+    // HOC for opened restaurants
+    const OpenedRestaurantCard = withOpenLabel(RestaurantCard);
 
     React.useEffect(()=>{
         fetchData();
@@ -32,9 +36,8 @@ const Body = () => {
         }
     }
 
-    console.log('show me network status', networkStatus)
     if(networkStatus === false) return <h1>Looks like you are offline. Please check your internet connection</h1>
-
+console.log('inside bodyy',loggedInUser)
     // Conditional Rendering
     return (
         originalList?.length === 0 
@@ -46,7 +49,7 @@ const Body = () => {
                             <input 
                                 type="text" 
                                 placeholder="Search" 
-                                className="text-base border border-solid border-black rounded-sm mr-4 w-40" 
+                                className="text-md border border-solid border-black rounded-sm mr-4 w-40 px-2" 
                                 value={searchText} 
                                 onChange={(e)=>{setSearchText(e.target.value)}}
                             />
@@ -65,6 +68,10 @@ const Body = () => {
                                 Search
                             </button>
                         </div>
+                        <div>
+                                UserName:
+                                <input className="border-2 border-black ml-3 px-2" placeholder="Enter name" value={loggedInUser} onChange={(e)=>setUserName(e.target.value)}/>
+                            </div>
                         <button 
                             className="mx-5 font-semibold text-lg rounded-md bg-slate-300 px-5 h-10" 
                             onClick={onTopRatedClick}
@@ -80,7 +87,11 @@ const Body = () => {
                                     key={restaurant.info.id}
                                     to={`restaurants/${restaurant.info.id}`}
                                 >
-                                    <RestaurantCard restaurantItem={restaurant}/>
+                                    {
+                                        restaurant?.info?.isOpen 
+                                            ? <OpenedRestaurantCard restaurantItem={restaurant} /> 
+                                            : <RestaurantCard restaurantItem={restaurant}/>
+                                    }
                                 </Link>
                             ))
                         }
