@@ -4,6 +4,7 @@ import UserContext from "../utils/userContext";
 
 const RestaurantCard = (props) => {
     const {restaurantItem} = props;
+    console.log('show me resaturant item',restaurantItem)
     const {cloudinaryImageId, cuisines, name, avgRatingString, sla} = restaurantItem.info;
 
     const {loggedInUser} = useContext(UserContext);
@@ -26,6 +27,7 @@ const RestaurantCard = (props) => {
 
 export const withOpenLabel = (RestaurantCard) => {
     return (data) => {
+        console.log("inside data show", data)
         return (
             <div>
                 <label className="absolute bg-black text-white px-2 rounded-md mx-2 my-1">Opened</label>

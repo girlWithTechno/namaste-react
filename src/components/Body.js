@@ -29,15 +29,15 @@ const Body = () => {
             const response = await fetch("https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.45970&lng=77.02820&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING")
             const data = await response.json();
 
-            setOriginalList(data?.data?.cards?.[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
-            setList(data?.data?.cards?.[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
+            setOriginalList(data?.data?.cards?.[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants)
+            setList(data?.data?.cards?.[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants);
         }catch(error){
             console.log("Error", error)
         }
     }
 
     if(networkStatus === false) return <h1>Looks like you are offline. Please check your internet connection</h1>
-console.log('inside bodyy',loggedInUser)
+console.log('inside bodyy',list)
     // Conditional Rendering
     return (
         originalList?.length === 0 
