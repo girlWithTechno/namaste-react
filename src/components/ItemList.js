@@ -15,7 +15,7 @@ const ItemList = ({items}) => {
       {
         items?.map((cardItem)=>{
             return (
-                <div className="flex text-left p-7 justify-between border-b-2" key={cardItem?.card?.info?.id}>
+                <div data-testid={"foodItems"} className="flex text-left p-7 justify-between border-b-2" key={cardItem?.card?.info?.id}>
                     <div className='w-9/12'>
                         { cardItem?.card?.info?.isVeg ? <span>{'✅'}</span> : <span>{'🛑'}</span> }
                         <div className="text-lg font-semibold">{cardItem?.card?.info?.name}</div>

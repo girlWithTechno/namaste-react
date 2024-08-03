@@ -29,10 +29,8 @@ const AppLayout = () => {
         const data = {
             name: "Sonakshi"
         };
-        console.log('inside useffect',userName)
         setUserName(data?.name);
     },[])
-    console.log('outside useffect',userName)
     return (
         <Provider store={appStore}>
             <UserContext.Provider value={{ loggedInUser: userName, setUserName }}>
